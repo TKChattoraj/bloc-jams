@@ -1,15 +1,15 @@
 .container {
     margin: 0 auto;
-    max-width: 64 rem
+    max-width: 64rem;
 }
-
 
 /* Medium and small screens (640px) */
 @media (min-width: 640px) {
     html {font-size: 112%;}
-    .column {float: left;
-    padding-left: 1rem;
-    padding-right: 1 rem;
+    .column {
+        float: left;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
     .column.full {width: 100%;}
     .column.two-thirds {width: 66.7%;}
@@ -22,8 +22,19 @@
 
 /* Large screens (1024px) */
 @media (min-width: 1024px) {
-    html {font-size; 120%;}
+    html {font-size: 120%;}
+
 }
+
+
+.clearfix::before, .clearfix::after {
+    content: " ";
+    display: table;     
+}
+.clearfix::after {
+    clear: both;
+}
+
 
 
 *, *::before, *::after {
