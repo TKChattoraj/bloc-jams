@@ -96,4 +96,7 @@ body {
     color: rgb(233,50,118);
 }
 
+.container.narrow {
+    max-width: 56rem;
+}
 
