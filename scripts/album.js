@@ -1,4 +1,18 @@
 //Example Album
+var albumTarun = {
+    title: 'Baseball',
+    artist: 'Tarun',
+    label: 'Cool Nerd',
+    year: '1967',
+    albumArtUrl: 'assets/images/album_covers/reds_logo.png',
+    songs: [
+        {title: 'Spirit of the Radio', duration: '4:32'},
+        {title: 'Come Fly With Me', duration: '3:32'},
+        {title: 'Centerfield', duration: '2:58'},
+        {title: 'Edelweiss', duration: '1:47'}
+    ]
+};
+
 var albumPicasso = {
     title: 'The Colors',
     artist: 'Pablo Picasso',
@@ -14,7 +28,7 @@ var albumPicasso = {
     ]
 };
 var albumMarconi = {
-    title: 'The Telephne',
+    title: 'The Telephone',
     artist: 'Guglielmo Marconi',
     label: 'EM',
     year: '1909',
@@ -28,6 +42,25 @@ var albumMarconi = {
     ]
 };
 
+//var createAlbumView = function(album) {
+    //var albumTemplate = 
+  //    '<section class= "clearfix">'
+  //  + '  <div class="column half">'
+  //  + '    <img src =' + album.albumArtUrl + ' class= "album-cover-art" id="cover">'
+ //   + '  </div>'
+  //  + '  <div class="album-view-details column half">'
+ //   + '    <h2 class= "album-view-title">' + album.title + ' <h2>'
+ //   + '    <h3  class= "album-view-artist">' + album.artist + ' </h3>'
+ //   + '    <h5 class= "album-view-release-info">' + album.year + ' ' + album.label + ' </h5>'
+//    + '  <div>'
+//    + '</section>'
+//    + '<table class = "album-view-song-list">'
+//    + '<table>'
+//    ;
+//    return albumTemplate;  
+//}
+
+
 var createSongRow = function(songNumber, songName, songLength) {
     var template = 
         '<tr class="album-view-song-item">'
@@ -38,24 +71,44 @@ var createSongRow = function(songNumber, songName, songLength) {
        ;
     return template;
 }
-var setCurrentAlbum = function(album) {
-    var albumTitle = document.getElementsByClassName('album-view-title')[0];
-    var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-    var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-    var albumImage = document.getElementsByClassName('album-cover-art')[0];
-    var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
-    
+var setCurrentAlbum = function(album) {  
     albumTitle.firstChild.nodeValue = album.title;
     albumArtist.firstChild.nodeValue = album.artist;
     albumReleaseInfo.firstChild.nodeValue = album.year + ' ' +album.label;
+    albumImage.setAttribute('src', album.albumArtUrl);
+    
+    //albumView.innerHTML = createAlbumView(album);
     
     albumSongList.innerHTML = '';
     
     for (var i=0; i<album.songs.length; i++) {
         albumSongList.innerHTML += createSongRow(i+1, album.songs[i].title, album.songs[i].duration);
-    }   
+    } 
+    
+    
 };
 
+var albumTitle = document.getElementsByClassName('album-view-title')[0];
+var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+var albumImage = document.getElementsByClassName('album-cover-art')[0];
+//var albumView = document.getElementsByClassName('album-view')[0];
+var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+//var albumImage = document.getElementById('cover');
+
+
+
 window.onload = function() {
-    setCurrentAlbum(albumPicasso);
-}
+    setCurrentAlbum(albumTarun);
+    var albumArray = [albumMarconi, albumPicasso, albumTarun];
+    
+    
+    var index = 0;
+    albumImage.addEventListener("click", function(event) {
+        setCurrentAlbum(albumArray[index]);
+        index = (index + 1) % 3;
+    });
+};
+
+
+
