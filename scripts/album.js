@@ -63,20 +63,25 @@ var albumMarconi = {
 
 var findParentByClassName = function(element, desiredClass) {
   var currentElement = element;
-  do {
-    console.log(currentElement);
-    if (currentElement.parentElement.className === desiredClass) {
-      console.log(currentElement);
-      console.log(currentElement.parentElement);
-      return currentElement.parentElement;
-
-      break;
-    }
-    else {
-      currentElement = currentElement.parentElement;
-    }
-  }
-  while (document.body.contains(currentElement));
+  if (currentElement.parentElement) {
+    do {
+        console.log(currentElement);
+        if (currentElement.parentElement.className === desiredClass) {
+          console.log(currentElement);
+          console.log(currentElement.parentElement);
+          return currentElement.parentElement;
+        }
+        else {
+          currentElement = currentElement.parentElement;
+        }
+      }
+    while (document.body.contains(currentElement));
+    alert ("No parent found with that class name");  
+    } 
+  else {
+    alert("No parent found");
+   }
+  
 };
 
 
