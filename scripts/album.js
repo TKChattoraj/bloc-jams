@@ -191,6 +191,7 @@ window.onload = function() {
     }
     var albumArray = [albumMarconi, albumPicasso, albumTarun];
     
+    //
     
     //var index = 0;
     //albumImage.addEventListener("click", function(event) {
