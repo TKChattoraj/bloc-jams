@@ -1,4 +1,11 @@
+
+
+
+
+
 //Example Album
+
+
 var albumTarun = {
     title: 'Baseball',
     artist: 'Tarun',
@@ -41,25 +48,6 @@ var albumMarconi = {
       {title: 'Wrong phnoe number', duration: '2:15'}
     ]
 };
-
-//var createAlbumView = function(album) {
-    //var albumTemplate = 
-  //    '<section class= "clearfix">'
-  //  + '  <div class="column half">'
-  //  + '    <img src =' + album.albumArtUrl + ' class= "album-cover-art" id="cover">'
- //   + '  </div>'
-  //  + '  <div class="album-view-details column half">'
- //   + '    <h2 class= "album-view-title">' + album.title + ' <h2>'
- //   + '    <h3  class= "album-view-artist">' + album.artist + ' </h3>'
- //   + '    <h5 class= "album-view-release-info">' + album.year + ' ' + album.label + ' </h5>'
-//    + '  <div>'
-//    + '</section>'
-//    + '<table class = "album-view-song-list">'
-//    + '<table>'
-//    ;
-//    return albumTemplate;  
-//}
-
 
 var findParentByClassName = function(element, desiredClass) {
   var currentElement = element;
@@ -125,35 +113,35 @@ var createSongRow = function(songNumber, songName, songLength) {
        +'  <td class="song-item-duration">' + songLength + '</td>'
        +'</tr>'
        ;
-    return template;
-}
-
-
-var setCurrentAlbum = function(album) {  
-    albumTitle.firstChild.nodeValue = album.title;
-    albumArtist.firstChild.nodeValue = album.artist;
-    albumReleaseInfo.firstChild.nodeValue = album.year + ' ' +album.label;
-    albumImage.setAttribute('src', album.albumArtUrl);
+    return $(template);
     
-    //albumView.innerHTML = createAlbumView(album);
-    
-    albumSongList.innerHTML = '';
-    
-    for (var i=0; i<album.songs.length; i++) {
-        albumSongList.innerHTML += createSongRow(i+1, album.songs[i].title, album.songs[i].duration);
-    }   
 };
 
 
+var setCurrentAlbum = function(album) {  
+       
+    $albumTitle.text(album.title);
+    
+    $albumArtist.text(album.artist);
+    $albumReleaseInfo.text(album.year + ' ' +album.label);
+    $albumImage.attr('src', album.albumArtUrl);
+    
+    
+    $albumSongList.empty();
+    
+    //for (var i=0; i<album.songs.length; i++) {
+    for (var i=0; i<album.songs.length; i++) {
+        var $newRow = createSongRow(i+1, album.songs[i].title, album.songs[i].duration);
+        $albumSongList.append($newRow);
+    }   
+};
 
+var $albumTitle = $('.album-view-title');
+var $albumArtist = $('.album-view-artist');
+var $albumReleaseInfo = $('.album-view-release-info');
+var $albumImage = $('.album-cover-art');
+var $albumSongList = $('.album-view-song-list');
 
-var albumTitle = document.getElementsByClassName('album-view-title')[0];
-var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-var albumImage = document.getElementsByClassName('album-cover-art')[0];
-//var albumView = document.getElementsByClassName('album-view')[0];
-var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
-//var albumImage = document.getElementById('cover');
 var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
 var songRows = document.getElementsByClassName('album-view-song-item');
 
@@ -162,7 +150,9 @@ var pauseButtonTemplate ='<a class="album-song-button"><span class="ion-pause"><
 var currentlyPlayingSong = null;
 
 
-window.onload = function() {
+
+$(window).ready(function() {
+   
     setCurrentAlbum(albumTarun);
     
     songListContainer.addEventListener('mouseover', function(event){
@@ -190,15 +180,7 @@ window.onload = function() {
         });
     }
     var albumArray = [albumMarconi, albumPicasso, albumTarun];
-    
-    //
-    
-    //var index = 0;
-    //albumImage.addEventListener("click", function(event) {
-    //    setCurrentAlbum(albumArray[index]);
-    //    index = (index + 1) % 3;
-    // });
-};
+});
 
 
 
