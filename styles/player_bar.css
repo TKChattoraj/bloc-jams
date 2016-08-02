@@ -56,13 +56,13 @@
 }
 
 .player-bar .currently-playing .song-name,
-.player-bar .curretnly-playing .artist-name,
+.player-bar .currently-playing .artist-name,
 .player-bar .currently-playing .artist-song-mobile {
     text-align: center;
     font-size: 0.75rem;
     margin: 0;
     position: aboslute;
-    width: 1000%;
+    width: 100%;
     font-weight: 300;
     
 }

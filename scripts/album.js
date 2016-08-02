@@ -1,50 +1,4 @@
 
-var albumTarun = {
-    title: 'Baseball',
-    artist: 'Tarun',
-    label: 'Cool Nerd',
-    year: '1967',
-    albumArtUrl: 'assets/images/album_covers/reds_logo.png',
-    songs: [
-        {title: 'Spirit of the Radio', duration: '4:32'},
-        {title: 'Come Fly With Me', duration: '3:32'},
-        {title: 'Centerfield', duration: '2:58'},
-        {title: 'Edelweiss', duration: '1:47'}
-    ]
-};
-
-var albumPicasso = {
-    title: 'The Colors',
-    artist: 'Pablo Picasso',
-    label: 'Cubism',
-    year: '1881',
-    albumArtUrl: 'assets/images/album_covers/01.png',
-    songs: [
-        {title: 'Blue', duration: '4:26'},
-        {title: 'Green', duration: '3:14'},
-        {title: 'Red', duration: '5:01'},
-        {title: 'Pink', duration: '3:21'},
-        {title: 'Magenta', duration: '2:15'}
-    ]
-};
-var albumMarconi = {
-    title: 'The Telephone',
-    artist: 'Guglielmo Marconi',
-    label: 'EM',
-    year: '1909',
-    albumArtUrl: 'assets/images/album_covers/20.png',
-    songs: [
-      {title: 'Hello, Operator?', duration: '1:01'},
-      {title: 'Ring, ring, ring', duration: '5:01'},
-      {title: 'Fits in your pocket', duration: '3:21'},
-      {title: 'Can you hear me now?', duration: '3.14'},
-      {title: 'Wrong phnoe number', duration: '2:15'}
-    ]
-};
-
-
-
-
 var createSongRow = function(songNumber, songName, songLength) {
     var template = 
         '<tr class="album-view-song-item">'
@@ -60,25 +14,28 @@ var createSongRow = function(songNumber, songName, songLength) {
         $that = $(this);
       
         
-        if (currentlyPlayingSong === null) {
+        if (currentlyPlayingSongNumber === null) {
             $that.html($pauseButtonTemplate);
-            currentlyPlayingSong = $that.attr('data-song-number');
-        } else if (currentlyPlayingSong === $that.attr('data-song-number')) {
+            currentlyPlayingSongNumber = $that.attr('data-song-number');
+            currentSongFromAlbum = currentAlbum.songs[currentlyPlayingSongNumber-1];
+        } else if (currentlyPlayingSongNumber === $that.attr('data-song-number')) {
             $that.html($playButtonTemplate);
-            currentlyPlayingSong = null;
-        } else if (currentlyPlayingSong !== $that.attr('data-song-number')) {
-            var $currentlyPlayingSongElement = $('tr').find('[data-song-number="' + currentlyPlayingSong +'"]');
-            $currentlyPlayingSongElement.html($currentlyPlayingSongElement.attr('data-song-number'));
+            currentlyPlayingSongNumber = null;
+            currentSongFromAlbum = null;
+        } else if (currentlyPlayingSongNumber !== $that.attr('data-song-number')) {
+            var $currentlyPlayingSongNumberElement = $('tr').find('[data-song-number="' + currentlyPlayingSongNumber +'"]');
+            $currentlyPlayingSongNumberElement.html($currentlyPlayingSongNumberElement.attr('data-song-number'));
             $that.html($pauseButtonTemplate);
-            currentlyPlayingSong = $that.attr('data-song-number');      
+            currentlyPlayingSongNumber = $that.attr('data-song-number');
+            currentSongFromAlbum = currentAlbum.songs[currentlyPlayingSongNumber-1];
          } 
-    
+        updatePlayerBarSong();
     };
     
     var onHover = function(event){
         var $songItem = $(this).find('.song-item-number');
         var $songItemNumber = $songItem.attr('data-song-number');
-        if ($songItemNumber !== currentlyPlayingSong) {
+        if ($songItemNumber !== currentlyPlayingSongNumber) {
           $songItem.html($playButtonTemplate); 
         }
     }; 
@@ -87,7 +44,7 @@ var createSongRow = function(songNumber, songName, songLength) {
     var offHover = function(event) {
        var $songItem = $(this).find('.song-item-number');
        var $songItemNumber = $songItem.attr('data-song-number');
-       if ($songItemNumber !== currentlyPlayingSong) {
+       if ($songItemNumber !== currentlyPlayingSongNumber) {
           $songItem.html($songItemNumber); 
         } 
     };
@@ -99,7 +56,13 @@ var createSongRow = function(songNumber, songName, songLength) {
 
 
 var setCurrentAlbum = function(album) {  
-       
+    currentAlbum = album;
+    var $albumTitle = $('.album-view-title');
+    var $albumArtist = $('.album-view-artist');
+    var $albumReleaseInfo = $('.album-view-release-info');
+    var $albumImage = $('.album-cover-art');
+    var $albumSongList = $('.album-view-song-list');
+    
     $albumTitle.text(album.title);
     
     $albumArtist.text(album.artist);
@@ -115,21 +78,32 @@ var setCurrentAlbum = function(album) {
     }   
 };
 
-var $albumTitle = $('.album-view-title');
-var $albumArtist = $('.album-view-artist');
-var $albumReleaseInfo = $('.album-view-release-info');
-var $albumImage = $('.album-cover-art');
-var $albumSongList = $('.album-view-song-list');
+
+var updatePlayerBarSong = function() {
+    var $songName = $('.song-name');
+    console.log($songName.text());
+    
+    if (currentSongFromAlbum == null) {
+    } else {
+        console.log(currentSongFromAlbum.title);
+        $songName.text(currentSongFromAlbum.title);
+        console.log($songName.text());
+    }
+       
+    
+};
+
 
 var $playButtonTemplate = $('<a class="album-song-button"><span class="ion-play"></span></a>');
 var $pauseButtonTemplate = $('<a class="album-song-button"><span class="ion-pause"></span></a>');
-var currentlyPlayingSong = null;
-//var $currentlyPlayingSong = $(null);
+
+var currentAlbum = null;
+var currentlyPlayingSongNumber = null;
+var currentSongFromAlbum = null;
 
 
 
 $(window).ready(function() {
-   
     setCurrentAlbum(albumTarun);
     
 });
