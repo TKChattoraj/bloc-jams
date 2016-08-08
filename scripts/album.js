@@ -14,9 +14,20 @@ var createSongRow = function(songNumber, songName, songLength) {
         
         if (currentlyPlayingSongNumber === null) {
             $that.html($pauseButtonTemplate);
+            $playPauseTemplate = $pauseButtonTemplate;
             setSong(parseInt($that.attr('data-song-number')));
             updatePlayerBarSong();
         } else if (currentlyPlayingSongNumber === $that.attr('data-song-number')) {
+            if (currentSoundFile.isPaused()) {
+                currentSoundFile.play();
+                $playPauseTemplate = $playButtonTemplate;
+                $that.html($playButtonTemplate);                            
+            } else {
+                currentSoundFile.pause();
+                $playPauseTemplate = $pauseButtonTemplate;
+                $that.html($pauseButtonTemplate);
+            }
+            updatePlayerBarSong();
             $that.html($playButtonTemplate);       
             $('.main-controls .play-pause').html(playerBarPlayButton);
             setSong(null);
@@ -26,6 +37,7 @@ var createSongRow = function(songNumber, songName, songLength) {
             //$currentlyPlayingSongNumberElement.html($currentlyPlayingSongNumberElement.attr('data-song-number'));
             $that.html($pauseButtonTemplate);
             setSong($that.attr('data-song-number'));
+            currentSoundFile.play();
             updatePlayerBarSong();
          } 
         
@@ -85,7 +97,11 @@ var setSong = function(songNumber){
         currentSongFromAlbum = null;
     }
     currentlyPlayingSongNumber = songNumber;
-    currentSongFromAlbum = currentAlbum.songs[currentlyPlayingSongNumber-1]  
+    currentSongFromAlbum = currentAlbum.songs[currentlyPlayingSongNumber-1];
+    currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
+        formats: ['mp3'],
+        preload: true
+    });
 };
 
 var $getSongNumberCell = function(number){
@@ -161,13 +177,14 @@ var updatePlayerBarSong = function() {
         $('.currently-playing .song-name').text(currentSongFromAlbum.title);
         $('.currently-playing .artist-name').text(currentAlbum.artist);
         $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
-        $('.main-controls .play-pause').html(playerBarPauseButton);
+        $('.main-controls .play-pause').html($playPauseTemplate);
     }    
 };
 
 
 var $playButtonTemplate = $('<a class="album-song-button"><span class="ion-play"></span></a>');
 var $pauseButtonTemplate = $('<a class="album-song-button"><span class="ion-pause"></span></a>');
+var $playPauseTemplate = null;
 
 var playerBarPlayButton = '<span class="ion-play"></span>';
 var playerBarPauseButton = '<span class="ion-pause"></span>';
@@ -175,14 +192,16 @@ var playerBarPauseButton = '<span class="ion-pause"></span>';
 var currentAlbum = null;
 var currentlyPlayingSongNumber = null;
 var currentSongFromAlbum = null;
+var currentSoundFile = null;
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
 
 
 
+
 $(window).ready(function() {
-    setCurrentAlbum(albumTarun);
+    setCurrentAlbum(albumPicasso);
     $previousButton.click(previousSong);
     $nextButton.click(nextSong);
     
