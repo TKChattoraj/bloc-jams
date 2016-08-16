@@ -201,7 +201,8 @@ var setupSeekBars = function() {
         
         var $seekBar = $(this).parent();
         
-        $(document).bind('mousemove.thumb', function(event){           
+        $(document).bind('mousemove.finger', function(event){
+            $('*').addClass('unselectable');
             var offsetX = event.pageX - $seekBar.offset().left;
             var barWidth = $seekBar.width();
             var seekBarFillRatio = offsetX / barWidth;
@@ -216,9 +217,10 @@ var setupSeekBars = function() {
             updateSeekPercentage($seekBar, seekBarFillRatio);          
         });
         
-        $(document).bind('mouseup.thumb', function() {
-            $(document).unbind('mousemove.thumb');
-            $(document).unbind('mouseup.thumb');     
+        $('*').bind('mouseup.finger', function() {
+            $(document).removeClass('unselectable');
+            $(document).unbind('mousemove.finger');
+            $(document).unbind('mouseup.finger');     
         });         
     });     
     

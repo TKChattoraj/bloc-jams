@@ -100,3 +100,10 @@ body {
     max-width: 56rem;
 }
 
+.unselectable {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
